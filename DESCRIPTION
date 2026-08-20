@@ -1,0 +1,18 @@
+Package: readFCS
+Title: Read Flow Cytometry Standard (FCS) files
+Version: 0.0.0.9000
+Authors@R: 
+    person(
+      "Nathan", "Laniewski", 
+      email = "nathan_laniewski@urmc.rochester.edu", 
+      role = c("aut", "cre")
+    )
+Description: Read Flow Cytometry Data File Standard (FCS 3.1 and 3.2) file segments: HEADER, TEXT, and DATA.
+License: AGPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+Config/roxygen2/version: 8.1.0
+LinkingTo: 
+    Rcpp
+Imports: 
+    Rcpp

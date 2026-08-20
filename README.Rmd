@@ -1,0 +1,43 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# readFCS
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+`readFCS` is a single dependency ([Rcpp](https://github.com/RcppCore/Rcpp)) FCS 3.1 reader; comprised of three sensibly named primary functions, an FCS file can be fully read using:
+
+| function     | Segment | Description                                    |
+|--------------|---------|------------------------------------------------|
+| readHEADER() | HEADER  | Contains byte offsets for reading all segments |
+| readTEXT()   | TEXT    | Keyword-value pairs                            |
+| readDATA()   | DATA    | linear (raw) measurement values                |
+
+## Installation
+
+Install `readFCS` from source ([RTools](https://cran.r-project.org/bin/windows/Rtools/) needed to build from source (Windows))
+
+``` r
+pak::pak("nlaniewski/readFCS")
+```
+## References
+
+Spidlen J, Moore W, Parks D, Goldberg M, Bray C, Bierre P, Gorombey P, Hyun B, Hubbard M, Lange S, Lefebvre R, Leif R, Novo D, Ostruszka L, Treister A, Wood J, Murphy RF, Roederer M, Sudar D, Zigon R, Brinkman RR. Data File Standard for Flow Cytometry, version FCS 3.1. Cytometry A. 2010 Jan;77(1):97-100. doi: 10.1002/cyto.a.20825. PMID: 19937951; PMCID: PMC2892967. <https://pmc.ncbi.nlm.nih.gov/articles/PMC2892967/>
+
+[FCS 3.1 Normative Standard](https://pmc.ncbi.nlm.nih.gov/articles/instance/2892967/bin/NIHMS203250-supplement-Supp_Fig_1.pdf)
+
+Original author of the C++ reader: [SamGG](https://github.com/SamGG) (<https://github.com/i-cyto/flowCoreUtils>)
+
