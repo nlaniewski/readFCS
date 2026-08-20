@@ -26,6 +26,8 @@ knitr::opts_chunk$set(
 | readTEXT()   | TEXT    | Keyword-value pairs                            |
 | readDATA()   | DATA    | linear (raw) measurement values                |
 
+By design, `readFCS` does not modify the source .fcs data other than reading it into memory for assignment; once available in an environment, users/developers can then access and structure the data as they see fit (e.g., a list of matrices or concatenated data.table).
+
 ## Installation
 
 Install `readFCS` from source ([RTools](https://cran.r-project.org/bin/windows/Rtools/) needed to build from source (Windows))
@@ -33,6 +35,60 @@ Install `readFCS` from source ([RTools](https://cran.r-project.org/bin/windows/R
 ``` r
 pak::pak("nlaniewski/readFCS")
 ```
+## Read FCS file segments
+
+Included in the package is a single .fcs file for the purpose of examples:
+
+```{r}
+fcs.file.path <- system.file("extdata", "CD4 BUV496 (Beads).fcs", package = "readFCS")
+```
+
+### readHEADER
+
+`readHEADER()` reads the **HEADER** segment of the FCS file, returning the byte offsets needed to read all primary file segments (namely, **TEXT** and **DATA**).  A `delimiter` attribute is attached to the `TEXT` offsets, specifying how the segment (string) will be split to generate the keyword-value pairs.  `$BYTEORD`, `$PAR`, `$TOT`, and `parameter.names` attributes are attached to the `DATA` offsets, specifying how the segment (binary stream) will be converted to matrix and then named (columns).
+
+```{r}
+offsets <- readFCS::readHEADER(fcs.file.path)
+```
+
+```{r}
+offsets[['version']]
+offsets[['TEXT']]
+offsets[['DATA']]
+```
+
+### readTEXT
+
+`readTEXT()` reads the **TEXT** segment of the FCS file, splitting the string by the delimiter and returning a list of keyword-value pairs.
+
+```{r}
+keywords.values <- readFCS::readTEXT(fcs.file.path)
+## index the list using keyword names to access their values
+keywords.values[['$CYT']]
+keywords.values[['TUBENAME']]
+keywords.values[['$DATE']]
+## index -- list structure
+keywords.values[c('$P1N', '$P2N')]
+## index -- named vector
+unlist(keywords.values[c('$P1N', '$P2N')])
+```
+
+### readDATA
+
+`readDATA()` reads the **DATA** segment of the FCS file, converting the binary stream (list mode/row-major) into a matrix of linear (raw) measurement values.
+
+```{r}
+DATA <- readFCS::readDATA(fcs.file.path)
+## linear measurement values -- forward and side scatter
+head(DATA[, c('FSC-A', 'SSC-A')])
+## linear measurement values -- fluorescence
+head(DATA[, 'BUV496-A', drop = FALSE])
+```
+
+## Utility
+
+Combining the return of both `readTEXT()` and `readDATA()` allows for the creation of structured objects (named lists of matrices with attached metadata, class-based S3 objects, etc.); those operations are beyond the scope of this package but `readFCS` should allow users/developers to achieve that utility.
+
 ## References
 
 Spidlen J, Moore W, Parks D, Goldberg M, Bray C, Bierre P, Gorombey P, Hyun B, Hubbard M, Lange S, Lefebvre R, Leif R, Novo D, Ostruszka L, Treister A, Wood J, Murphy RF, Roederer M, Sudar D, Zigon R, Brinkman RR. Data File Standard for Flow Cytometry, version FCS 3.1. Cytometry A. 2010 Jan;77(1):97-100. doi: 10.1002/cyto.a.20825. PMID: 19937951; PMCID: PMC2892967. <https://pmc.ncbi.nlm.nih.gov/articles/PMC2892967/>
