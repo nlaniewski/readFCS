@@ -1,12 +1,22 @@
 Package: readFCS
 Title: Read Flow Cytometry Standard (FCS) files
 Version: 0.0.0.9000
-Authors@R: 
+Authors@R: c(
     person(
       "Nathan", "Laniewski", 
       email = "nathan_laniewski@urmc.rochester.edu", 
       role = c("aut", "cre")
+    ),
+    person(
+      "Samuel", "Granjeaud",
+      email = "samuel.granjeaud@inserm.fr",
+      role = c("aut"),
+      comment = c(
+        ORCID = "0000-0001-9245-1535",
+        `C++ reader` = "https://github.com/i-cyto/flowCoreUtils/tree/main"
+      )
     )
+  )
 Description: Read Flow Cytometry Data File Standard (FCS 3.1 and 3.2) file segments: HEADER, TEXT, and DATA.
 License: AGPL (>= 3)
 Encoding: UTF-8
