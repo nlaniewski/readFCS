@@ -86,7 +86,7 @@ readTEXT <- function(fcs.file.path, return.string = FALSE, con = NULL, offsets =
   return(kv)
 }
 
-parameters <- function(fcs.file.path){
+parameters <- function(fcs.file.path, return.type = c('list', 'data.frame')){
   ## use the return of readTEXT()
   kv <- readTEXT(fcs.file.path)
   ## number of parameters in an event
@@ -102,7 +102,33 @@ parameters <- function(fcs.file.path){
   pars <- trimws(unlist(kv[parameter.names]))
   ## split parameters vector into 'types'; list
   par.types <- split(x = pars, f = factor(sub(par.pattern, "", names(pars))))
+  ## return
+  switch(
+    match.arg(return.type),
+    list = par.types,
+    data.frame = parameter.frame(par.types)
+  )
+}
+
+parameter.frame <- function(par.types){
+  ## maximum number of parameters
+  par.n <- max(sapply(par.types, length))
+  ## empty data.frame
+  parameter.frame <- data.frame(
+    matrix(character(), nrow = par.n, ncol = length(par.types) + 1)
+  )
+  ## set column names
+  colnames(parameter.frame) <- c('par', names(par.types))
+  ## fill the 'par' column
+  parameter.frame[['par']] <- paste0("$P", seq_len(par.n))
+  ## fill based on parameter type
+  for (j in names(par.types)) {
+    par.vec <- par.types[[j]]
+    par.i <- as.integer(gsub("\\D+", "", names(par.vec)))
+    parameter.frame[[j]][par.i] <- par.vec
+  }
   ##
+  return(parameter.frame)
 }
 
 spill <- function(fcs.file.path){
