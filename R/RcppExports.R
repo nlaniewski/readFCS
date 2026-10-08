@@ -5,3 +5,7 @@ readDATAcpp <- function(file_path, byte_offset, TOT, PAR, swap) {
     .Call(`_readFCS_readDATAcpp`, file_path, byte_offset, TOT, PAR, swap)
 }
 
+readDATAcpp_indexed <- function(file_path, byte_offset, TOT, PAR, swap, keep_cols) {
+    .Call(`_readFCS_readDATAcpp_indexed`, file_path, byte_offset, TOT, PAR, swap, keep_cols)
+}
+

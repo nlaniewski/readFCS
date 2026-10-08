@@ -25,9 +25,26 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// readDATAcpp_indexed
+NumericMatrix readDATAcpp_indexed(const std::string& file_path, long byte_offset, long TOT, long PAR, bool swap, IntegerVector keep_cols);
+RcppExport SEXP _readFCS_readDATAcpp_indexed(SEXP file_pathSEXP, SEXP byte_offsetSEXP, SEXP TOTSEXP, SEXP PARSEXP, SEXP swapSEXP, SEXP keep_colsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string& >::type file_path(file_pathSEXP);
+    Rcpp::traits::input_parameter< long >::type byte_offset(byte_offsetSEXP);
+    Rcpp::traits::input_parameter< long >::type TOT(TOTSEXP);
+    Rcpp::traits::input_parameter< long >::type PAR(PARSEXP);
+    Rcpp::traits::input_parameter< bool >::type swap(swapSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type keep_cols(keep_colsSEXP);
+    rcpp_result_gen = Rcpp::wrap(readDATAcpp_indexed(file_path, byte_offset, TOT, PAR, swap, keep_cols));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_readFCS_readDATAcpp", (DL_FUNC) &_readFCS_readDATAcpp, 5},
+    {"_readFCS_readDATAcpp_indexed", (DL_FUNC) &_readFCS_readDATAcpp_indexed, 6},
     {NULL, NULL, 0}
 };
 

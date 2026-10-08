@@ -98,4 +98,21 @@ readDATA <- function(fcs.file.path){
   return(DATA)
 }
 
-
+readDATA_indexed <- function(fcs.file.path, col.index){
+  ## use the return of readHEADER()
+  ### offsets[["DATA"]]'
+  offsets <- readHEADER(fcs.file.path)[["DATA"]]
+  ##
+  DATA <- readDATAcpp_indexed(
+    file_path = fcs.file.path,
+    byte_offset = offsets[['start']],
+    TOT = attr(offsets, which = '$TOT'),
+    PAR = attr(offsets, which = '$PAR'),
+    swap = !identical(attr(offsets, which = '$BYTEORD'), "1,2,3,4"),
+    keep_cols = col.index - 1# C++ uses 0-based indices -- subtract 1
+  )
+  ##
+  colnames(DATA) <- attr(offsets, which = 'parameter.names')[col.index]
+  ##
+  return(DATA)
+}
