@@ -86,9 +86,21 @@ readTEXT <- function(fcs.file.path, return.string = FALSE, con = NULL, offsets =
   return(kv)
 }
 
-parameters <- function(fcs.file.path, return.type = c('list', 'data.frame')){
-  ## use the return of readTEXT()
-  kv <- readTEXT(fcs.file.path)
+parameters <- function(
+    fcs.file.path = NULL,
+    keywords = NULL,
+    return.type = c('list', 'data.frame')
+)
+{
+  ## if a file path
+  if(!is.null(fcs.file.path)){
+    ## use the return of readTEXT()
+    kv <- readTEXT(fcs.file.path)
+  }
+  ## if keywords (assigned to environment)
+  if(!is.null(keywords)){
+    kv <- keywords
+  }
   ## number of parameters in an event
   par.n <- as.numeric(kv[['$PAR']])
   ## regex pattern to find '$P#' and 'P#
